@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chat de WhatsApp</title>
+	<!-- Enlazar los archivos de Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<!-- Estilos personalizados -->
+    <script src="/socket.io/socket.io.js"></script>
+
+  <script>
+    // Conexión de Socket.IO al servidor
+    var socket = io();
+
+    // Función para enviar mensajes del chat 1
+    function enviarMensaje1() {
+      var mensaje = document.getElementById('mensaje1').value;
+      socket.emit('chat message 1', mensaje);
+      document.getElementById('mensaje1').value = '';
+      return false;
+    }
+
+    // Función para recibir mensajes del chat 1
+    socket.on('chat message 1', function (msg) {
+      var listaMensajes = document.getElementById('lista-mensajes1');
+      var mensaje = document.createElement('li');
+      mensaje.textContent = "miluska"+ msg;
+      listaMensajes.appendChild(mensaje);
+    });
+
+    // Función para enviar mensajes del chat 2
+    function enviarMensaje2() {
+      var mensaje = document.getElementById('mensaje2').value;
+      socket.emit('chat message 2', mensaje);
+      document.getElementById('mensaje2').value = '';
+      return false;
+    }
+
+    // Función para recibir mensajes del chat 2
+    socket.on('chat message 2', function (msg) {
+      var listaMensajes = document.getElementById('lista-mensajes2');
+      var mensaje = document.createElement('li');
+      mensaje.textContent = "Tú: " + msg;
+      listaMensajes.appendChild(mensaje);
+    });
+   
+
+
+  </script>
+	<style>
+		.chat-container {
+			max-width: 600px;
+			margin: auto;
+			background-color: #f1f1f1;
+			border-radius: 10px;
+			padding: 10px;
+			box-shadow: 0px 0px 20px #999;
+		}
+		.chat-container .message {
+			background-color: #fff;
+			padding: 10px;
+			border-radius: 10px;
+			margin-bottom: 10px;
+			box-shadow: 0px 0px 10px #999;
+		}
+		.chat-container .message.sent {
+			background-color: #dcf8c6;
+		}
+		.chat-container .message.received {
+			background-color: #fff;
+		}
+		.chat-container .message .time {
+			font-size: 10px;
+			color: #999;
+			margin-top: 5px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row mb-3">
+			<div class="col">
+				<h1 style="text-align: center;">Chat con: <%= username %></h1>
+				
+			</div>
+		</div>
+
+		<div class="chat-container">
+			<div class="message received">
+				<p id="lista-mensajes1"></p>
+				<span class="time">12:34</span>
+			</div>
+			<div class="message sent">
+				<p style="text-align: right;" id="lista-mensajes2"></p>
+				<span class="time" >12:35</span>
+			</div>
+		
+			<!-- Agregar más mensajes aquí -->
+			<div class="row">
+				<div class="col">
+					<form onsubmit="return enviarMensaje1()">
+						<div class="form-group">
+							<label for="chat-input">Escribe un mensaje1:</label>
+							<input type="text" class="form-control" id="mensaje1">
+						</div>
+						<button type="submit" class="btn btn-primary">Enviar</button>
+					</form>
+
+                    <form onsubmit="return enviarMensaje2()">
+						<div class="form-group">
+							<label for="chat-input">Escribe un mensaje2:</label>
+							<input type="text" class="form-control" id="mensaje2">
+						</div>
+						<button type="submit" class="btn btn-primary">Enviar</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+

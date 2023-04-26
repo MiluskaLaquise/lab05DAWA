@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wazzap</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Conexión de Socket.IO al servidor
+        var socket = io();
+
+        // Función poner nombre del chat 1
+        function ponernombre1() {
+            var nombre = document.getElementById('nombre1').value;
+            socket.emit('nombre message 1', nombre);
+            document.getElementById('nombre1').value = '';
+            return false;
+        }
+
+        // Función para nombre del chat 1
+        socket.on('nombre message 1', function(nmb){
+            var listaNombres = document.getElementById('lista-nombres');
+            var nombre= document.createElement('li');
+            nombre.textContent = "Nombre de la persona 1: " + nmb;
+            listaNombres.appendChild(nombre);
+        });
+
+        // Función poner nombre del chat 2
+        function ponernombre2() {
+            var nombre = document.getElementById('nombre2').value;
+            socket.emit('nombre message 2', nombre);
+            document.getElementById('nombre2').value = '';
+            return false;
+        }
+
+        // Función para nombre del chat 2
+        socket.on('nombre message 2', function(nmb){
+            var listaNombres = document.getElementById('lista-nombres');
+            var nombre= document.createElement('li');
+            nombre.textContent = "Nombre de la persona 2: " + nmb;
+            listaNombres.appendChild(nombre);
+        });
+
+        // Función para enviar mensajes del chat 1
+        function enviarMensaje1() {
+            var mensaje = document.getElementById('mensaje1').value;
+            socket.emit('chat message 1', mensaje);
+            document.getElementById('mensaje1').value = '';
+            return false;
+        }
+
+        // Función para recibir mensajes del chat 1
+        socket.on('chat message 1', function(msg){
+            var listaMensajes = document.getElementById('lista-mensajes');
+            var mensaje = document.createElement('li');
+            mensaje.textContent = "Chat 1: " + msg;
+            listaMensajes.appendChild(mensaje);
+        });
+
+        // Función para enviar mensajes del chat 2
+        function enviarMensaje2() {
+            var mensaje = document.getElementById('mensaje2').value;
+            socket.emit('chat message 2', mensaje);
+            document.getElementById('mensaje2').value = '';
+            return false;
+        }
+
+        // Función para recibir mensajes del chat 2
+        socket.on('chat message 2', function(msg){
+            var listaMensajes = document.getElementById('lista-mensajes');
+            var mensaje = document.createElement('li');
+            mensaje.textContent = "Chat 2: " + msg;
+            listaMensajes.appendChild(mensaje);
+        });
+    </script>
+</head>
+<body>
+    <h1 class="text-center mt-3">Wazzap</h1>    
+    <div class="scrollbar-trigger relative flex h-full w-full flex-1 items-start border-white/20">
+
+   
+
+    <div class="container mt-5 ">
+    <h1>Chat 1</h1>
+    <form onsubmit="return enviarMensaje1()">
+        <input id="mensaje1" autocomplete="off" />
+        <button>Enviar</button>
+    </form>
+
+
+    <h1>Chat 2</h1>
+    <form onsubmit="return enviarMensaje2()">
+        <input id="mensaje2" autocomplete="off" placeholder="chat 2" />
+        <button>Enviar</button>
+    </form>
+    </div>
+
+</body>
+</html>
